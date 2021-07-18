@@ -1,8 +1,8 @@
-import { FormEvent, useContext, useRef } from "react";
-import { TextField, Button, Box, makeStyles } from "@material-ui/core";
+import { FormEvent, useContext, useRef } from 'react';
+import { TextField, Button, Box } from '@material-ui/core';
 
-import CredentialsContext from "../../context/Credentials/CredentialsContext";
-import { useTranslate } from "../../hooks/useTranslate";
+import CredentialsContext from '../../context/Credentials/CredentialsContext';
+import { useTranslate } from '../../hooks/useTranslate';
 
 export const Form = () => {
     const { translate } = useTranslate();
@@ -22,6 +22,9 @@ export const Form = () => {
                 secretKey: secretKeyRef.current!.value,
             },
         ]);
+
+        apiKeyRef.current!.value = '';
+        secretKeyRef.current!.value = '';
     };
 
     return (
@@ -30,7 +33,7 @@ export const Form = () => {
             <TextField fullWidth label="SECRET KEY" inputRef={secretKeyRef} />
             <Box mt={1}>
                 <Button type="submit" variant="contained" color="primary">
-                    {translate("LABEL_SAVE")}
+                    {translate('LABEL_SAVE')}
                 </Button>
             </Box>
         </form>
