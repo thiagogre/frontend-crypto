@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
-import CredentialsContext from "./CredentialsContext";
-import { Credentials } from "../../models";
+import CredentialsContext from './CredentialsContext';
+import { Credentials } from '../../models';
 
 const CredentialsProvider: React.FC = props => {
     const { children } = props;

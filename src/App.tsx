@@ -4,14 +4,14 @@ import {
     CssBaseline,
     Grid,
     makeStyles,
-} from "@material-ui/core";
+} from '@material-ui/core';
 
-import theme from "./theme";
-import CredentialsProvider from "./context/Credentials/CredentialsProvider";
+import theme from './theme';
+import CredentialsProvider from './context/Credentials/CredentialsProvider';
 
-import { Form } from "./components/Form";
-import { Title } from "./components/Title";
-import { CredentialsList } from "./components/CredentialsList";
+import { Form } from './components/Form';
+import { Title } from './components/Title';
+import { CredentialsList } from './components/CredentialsList';
 
 const useStyles = makeStyles(() => ({
     container: {
@@ -30,8 +30,7 @@ const App = () => {
                     <Grid
                         container
                         direction="column"
-                        className={classes.container}
-                    >
+                        className={classes.container}>
                         <Grid item xs={12}>
                             <Title>Binance Keys</Title>
                             <Form />

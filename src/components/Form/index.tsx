@@ -28,14 +28,20 @@ export const Form = () => {
     };
 
     return (
-        <form onSubmit={onSubmit}>
-            <TextField fullWidth label="API KEY" inputRef={apiKeyRef} />
-            <TextField fullWidth label="SECRET KEY" inputRef={secretKeyRef} />
-            <Box mt={1}>
-                <Button type="submit" variant="contained" color="primary">
-                    {translate('LABEL_SAVE')}
-                </Button>
-            </Box>
-        </form>
+        <>
+            <form onSubmit={onSubmit}>
+                <TextField fullWidth label="API KEY" inputRef={apiKeyRef} />
+                <TextField
+                    fullWidth
+                    label="SECRET KEY"
+                    inputRef={secretKeyRef}
+                />
+                <Box mt={1}>
+                    <Button type="submit" variant="contained" color="primary">
+                        {translate('LABEL_SAVE')}
+                    </Button>
+                </Box>
+            </form>
+        </>
     );
 };
