@@ -16,6 +16,7 @@ import {
 } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 import KeyIcon from '@material-ui/icons/VpnKey';
+import BookmarkIcon from '@material-ui/icons/Bookmark';
 import DeleteIcon from '@material-ui/icons/Delete';
 import CloseIcon from '@material-ui/icons/Close';
 
@@ -25,6 +26,7 @@ import { Types } from '../context/types';
 import { Credentials } from '../models';
 
 import { Title } from '../components/Title';
+import { api } from '../api/config';
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -39,13 +41,24 @@ const useStyles = makeStyles(theme => ({
     box: {
         margin: '16px 0',
     },
+    listItemIcon: {
+        display: 'flex',
+        alignItems: 'center',
+    },
+    boxCurrentIcon: {
+        height: 50,
+        width: 50,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
     alert: { background: theme.palette.success.main },
 }));
 
 export const Settings: React.FC = () => {
-    const { translate } = useTranslate();
-    const classes = useStyles();
     const { dispatch, state } = useApplicationContext();
+    const { translate } = useTranslate(state.app.language);
+    const classes = useStyles();
 
     const [invalid, setInvalid] = useState(false);
     const [deleted, setDeleted] = useState(false);
@@ -56,13 +69,16 @@ export const Settings: React.FC = () => {
     const onSave = () => {
         const updateCredentials = {
             ...state.user,
-            credentials: [
+            credentials: {
                 ...state.user.credentials,
-                {
-                    apiKey: apiKeyRef.current!.value,
-                    secretKey: secretKeyRef.current!.value,
-                },
-            ],
+                list: [
+                    ...state.user.credentials.list,
+                    {
+                        apiKey: apiKeyRef.current!.value,
+                        secretKey: secretKeyRef.current!.value,
+                    },
+                ],
+            },
         };
 
         dispatch({
@@ -88,7 +104,7 @@ export const Settings: React.FC = () => {
     };
 
     const handleDelete = (credentials: Credentials) => {
-        const updateCredentials = state.user.credentials;
+        const updateCredentials = state.user.credentials.list;
 
         const updatedCredentials = updateCredentials.filter(
             c => c.apiKey !== credentials.apiKey && c,
@@ -96,7 +112,12 @@ export const Settings: React.FC = () => {
 
         dispatch({
             type: Types.SetUser,
-            payload: { credentials: updatedCredentials },
+            payload: {
+                credentials: {
+                    ...state.user.credentials,
+                    list: updatedCredentials,
+                },
+            },
         });
 
         localStorage.setItem(
@@ -105,6 +126,26 @@ export const Settings: React.FC = () => {
         );
 
         setDeleted(true);
+    };
+
+    const setCurrentCrendetials = (credentials: Credentials) => {
+        dispatch({
+            type: Types.SetUser,
+            payload: {
+                credentials: {
+                    ...state.user.credentials,
+                    current: credentials,
+                },
+            },
+        });
+
+        localStorage.setItem(
+            '@crypto:credentials',
+            JSON.stringify({ ...state.user.credentials, current: credentials }),
+        );
+
+        api.defaults.headers.get['api-key'] = credentials?.apiKey;
+        api.defaults.headers.get['api-secret'] = credentials?.secretKey;
     };
 
     return (
@@ -173,15 +214,28 @@ export const Settings: React.FC = () => {
                     </Box>
                 </FormGroup>
                 <List>
-                    {state.user.credentials.map(
+                    {state.user.credentials.list.map(
                         (credentials: Credentials, i: number) => (
                             <ListItem button key={i}>
-                                <ListItemIcon>
+                                <ListItemIcon className={classes.listItemIcon}>
                                     <KeyIcon />
+                                    {state.user.credentials.current?.apiKey ===
+                                    credentials.apiKey ? (
+                                        <Box className={classes.boxCurrentIcon}>
+                                            <BookmarkIcon />
+                                        </Box>
+                                    ) : (
+                                        <Box
+                                            className={classes.boxCurrentIcon}
+                                        />
+                                    )}
                                 </ListItemIcon>
                                 <ListItemText
                                     primary={credentials.apiKey}
                                     secondary={credentials.secretKey}
+                                    onClick={() =>
+                                        setCurrentCrendetials(credentials)
+                                    }
                                 />
                                 <ListItemIcon>
                                     <IconButton
