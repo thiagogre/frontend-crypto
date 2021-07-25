@@ -17,13 +17,13 @@ export const ApplicationThemeProvider: React.FC<ThemeProps> = ({
             light: colors.orange['A200'],
             main: colors.orange['A400'],
             dark: colors.orange['A700'],
-            contrastText: '#000',
+            contrastText: '#303030',
         },
         secondary: {
             light: colors.grey['A200'],
             main: colors.grey['A400'],
             dark: colors.grey['A700'],
-            contrastText: '#000',
+            contrastText: '#303030',
         },
     };
 
