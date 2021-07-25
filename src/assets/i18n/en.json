@@ -1,3 +1,10 @@
 {
-    "LABEL_SAVE": "Save"
+    "SAVE": "Save",
+    "SETTINGS": "Settings",
+    "LOGIN": "Login",
+
+    "API_KEY": "API Key",
+    "SECRET_KEY": "Secret Key",
+    "ADD_THE_TWO_KEYS": "Add the two keys",
+    "DELETED_KEYS": "Deleted keys"
 }

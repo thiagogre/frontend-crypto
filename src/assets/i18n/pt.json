@@ -1,3 +1,10 @@
 {
-    "LABEL_SAVE": "Salvar"
+    "SAVE": "Salvar",
+    "SETTINGS": "Configurações",
+    "LOGIN": "Acessar",
+
+    "API_KEY": "Chave da API",
+    "SECRET_KEY": "Chave secreta",
+    "ADD_THE_TWO_KEYS": "Adicione as duas chaves",
+    "DELETED_KEYS": "Chaves deletadas"
 }
