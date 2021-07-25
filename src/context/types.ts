@@ -1,11 +1,11 @@
 import { Dispatch } from 'react';
 
 import { Actions } from './actions';
-import { Credentials } from '../models';
+import { UserCredentials, Language } from '../models';
 
 export enum Types {
     SetUser = 'USER',
-    SetLoading = 'LOADING',
+    SetLanguage = 'LANGUAGE',
 }
 
 export type InitialStateType = {
@@ -19,9 +19,9 @@ export type ContextType = {
 };
 
 export type ApplicationControlsType = {
-    loading: boolean;
+    language: Language;
 };
 
 export type UserType = {
-    credentials: Credentials[] | [];
+    credentials: UserCredentials;
 };

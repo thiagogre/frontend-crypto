@@ -6,8 +6,8 @@ export const applicationControlsReducer = (
     action: Actions,
 ) => {
     switch (action.type) {
-        case Types.SetLoading:
-            return { ...state, loading: action.payload };
+        case Types.SetLanguage:
+            return { ...state, language: action.payload };
         default:
             return state;
     }

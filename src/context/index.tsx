@@ -2,13 +2,16 @@ import { createContext, useReducer, useContext, useEffect } from 'react';
 
 import { ContextType, Types } from './types';
 import { mainReducer } from './reducers';
-import { Credentials } from '../models';
+import { Language, UserCredentials } from '../models';
+import { api } from '../api/config';
+
+const language: Language = 'en';
 
 const initialState = {
     app: {
-        loading: false,
+        language,
     },
-    user: { credentials: [] },
+    user: { credentials: { list: [], current: null } },
 };
 
 const ApplicationContext = createContext<ContextType>({
@@ -26,13 +29,18 @@ export const ApplicationProvider: React.FC = ({ children }) => {
             );
 
             if (storagedCredentials) {
-                const credentials: Credentials[] =
+                const credentials: UserCredentials =
                     JSON.parse(storagedCredentials);
 
                 dispatch({
                     type: Types.SetUser,
                     payload: { credentials },
                 });
+
+                api.defaults.headers.get['api-key'] =
+                    credentials.current?.apiKey;
+                api.defaults.headers.get['api-secret'] =
+                    credentials.current?.secretKey;
             }
         }
 
