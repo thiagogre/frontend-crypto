@@ -1,11 +1,16 @@
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
+import { Header } from '../components/Header';
 import { routes } from './routes';
 import { Route as RouteType } from '../models';
-
-export const Routes = () => {
+type HeaderProps = {
+    toggleMode: () => void;
+    mode: string;
+};
+export const Routes: React.FC<HeaderProps> = ({ toggleMode, mode }) => {
     return (
         <Router>
+            <Header toggleMode={toggleMode} mode={mode} />
             <Switch>
                 {routes.map((route: RouteType, i: number) => (
                     <Route

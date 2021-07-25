@@ -5,8 +5,6 @@ import { ApplicationProvider } from './context';
 import { ApplicationThemeProvider } from './theme';
 import { Routes } from './routes';
 
-import { Header } from './components/Header';
-
 const App = () => {
     const [mode, setMode] = useState<PaletteType>('light');
 
@@ -18,8 +16,7 @@ const App = () => {
         <ApplicationProvider>
             <ApplicationThemeProvider type={mode}>
                 <CssBaseline />
-                <Header toggleMode={toggleMode} mode={mode} />
-                <Routes />
+                <Routes toggleMode={toggleMode} mode={mode} />
             </ApplicationThemeProvider>
         </ApplicationProvider>
     );
