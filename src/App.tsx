@@ -1,45 +1,27 @@
-import {
-    MuiThemeProvider,
-    Container,
-    CssBaseline,
-    Grid,
-    makeStyles,
-} from '@material-ui/core';
+import { useState } from 'react';
+import { CssBaseline, PaletteType } from '@material-ui/core';
 
-import theme from './theme';
-import CredentialsProvider from './context/Credentials/CredentialsProvider';
+import { ApplicationProvider } from './context';
+import { ApplicationThemeProvider } from './theme';
+import { Routes } from './routes';
 
-import { Form } from './components/Form';
-import { Title } from './components/Title';
-import { CredentialsList } from './components/CredentialsList';
-
-const useStyles = makeStyles(() => ({
-    container: {
-        padding: 20,
-    },
-}));
+import { Header } from './components/Header';
 
 const App = () => {
-    const classes = useStyles();
+    const [mode, setMode] = useState<PaletteType>('light');
+
+    const toggleMode = () => {
+        setMode(mode === 'dark' ? 'light' : 'dark');
+    };
 
     return (
-        <CredentialsProvider>
-            <MuiThemeProvider theme={theme}>
+        <ApplicationProvider>
+            <ApplicationThemeProvider type={mode}>
                 <CssBaseline />
-                <Container>
-                    <Grid
-                        container
-                        direction="column"
-                        className={classes.container}>
-                        <Grid item xs={12}>
-                            <Title>Binance Keys</Title>
-                            <Form />
-                            <CredentialsList />
-                        </Grid>
-                    </Grid>
-                </Container>
-            </MuiThemeProvider>
-        </CredentialsProvider>
+                <Header toggleMode={toggleMode} mode={mode} />
+                <Routes />
+            </ApplicationThemeProvider>
+        </ApplicationProvider>
     );
 };
 
