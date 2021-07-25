@@ -10,8 +10,12 @@ import {
 import SettingsIcon from '@material-ui/icons/Settings';
 import LightModeIcon from '@material-ui/icons/Brightness4';
 import DarkModeIcon from '@material-ui/icons/Brightness7';
+import TranslateIcon from '@material-ui/icons/Translate';
 
 import { useTranslate } from '../../hooks/useTranslate';
+import { Link } from 'react-router-dom';
+import { useApplicationContext } from '../../context';
+import { Types } from '../../context/types';
 
 type HeaderProps = {
     toggleMode: () => void;
@@ -25,6 +29,13 @@ const useStyles = makeStyles(theme => ({
             padding: 0,
             listStyle: 'none',
         },
+        a: {
+            textDecoration: 'none',
+            color: theme.palette.primary.contrastText,
+        },
+    },
+    toolbar: {
+        flexWrap: 'wrap',
     },
     toolbarTitle: {
         flexGrow: 1,
@@ -33,25 +44,38 @@ const useStyles = makeStyles(theme => ({
     link: {
         margin: theme.spacing(1, 1.5),
     },
+    languageButton: {
+        display: 'flex',
+        alignItems: 'center',
+    },
 }));
 
 export const Header: React.FC<HeaderProps> = ({ toggleMode, mode }) => {
-    const { translate } = useTranslate();
+    const { state, dispatch } = useApplicationContext();
+    const { translate } = useTranslate(state.app.language);
     const classes = useStyles();
+
+    const toggleLanguage = () =>
+        dispatch({
+            type: Types.SetLanguage,
+            payload: state.app.language === 'en' ? 'pt' : 'en',
+        });
 
     return (
         <AppBar position="static" elevation={0}>
             <Container maxWidth="lg">
-                <Toolbar>
+                <Toolbar className={classes.toolbar}>
                     <Typography
                         variant="h6"
                         noWrap
                         className={classes.toolbarTitle}>
-                        Crypto Dashboard
+                        <Link to={'/'}>Crypto Dashboard</Link>
                     </Typography>
-                    {/* <IconButton>
-                        <SettingsIcon color={'secondary'} />
-                    </IconButton> */}
+                    <Link to={'/settings'}>
+                        <IconButton>
+                            <SettingsIcon color={'secondary'} />
+                        </IconButton>
+                    </Link>
                     <IconButton onClick={toggleMode}>
                         {mode === 'dark' ? (
                             <DarkModeIcon color={'secondary'} />
@@ -59,6 +83,17 @@ export const Header: React.FC<HeaderProps> = ({ toggleMode, mode }) => {
                             <LightModeIcon color={'secondary'} />
                         )}
                     </IconButton>
+                    <Button
+                        onClick={toggleLanguage}
+                        className={classes.languageButton}>
+                        <TranslateIcon color={'secondary'} />
+                        <Typography
+                            variant="subtitle2"
+                            color={'secondary'}
+                            className={classes.toolbarTitle}>
+                            {state.app.language}
+                        </Typography>
+                    </Button>
                     <Button
                         href="#"
                         variant="outlined"
