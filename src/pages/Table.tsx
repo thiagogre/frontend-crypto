@@ -9,12 +9,8 @@ import {
     TableHead,
     TableRow,
     Paper,
-    IconButton,
-    Collapse,
     makeStyles,
 } from '@material-ui/core';
-import Alert from '@material-ui/lab/Alert';
-import CloseIcon from '@material-ui/icons/Close';
 
 import { useTranslate } from '../hooks/useTranslate';
 import { AllCoinsResponse } from '../models';
@@ -136,7 +132,6 @@ export const Table: React.FC = () => {
     const classes = useStyles();
     const { dispatch, state } = useApplicationContext();
 
-    const [feedback, setFeedback] = useState({ isVisible: false, message: '' });
     const [coins, setCoins] = useState<AllCoinsResponse | null>(null);
 
     const getCoins = async () => {
@@ -160,9 +155,14 @@ export const Table: React.FC = () => {
             });
 
             const { status, data, statusText } = e.response;
-            setFeedback({
-                isVisible: true,
-                message: `${status} - ${data.error || statusText}`,
+
+            dispatch({
+                type: Types.SetFeedback,
+                payload: {
+                    visible: true,
+                    message: `${status} - ${data.error || statusText}`,
+                    type: 'error',
+                },
             });
         }
     };
@@ -173,28 +173,6 @@ export const Table: React.FC = () => {
 
     return (
         <Container maxWidth="md">
-            <Collapse in={feedback.isVisible} timeout={0}>
-                <Alert
-                    variant="standard"
-                    severity="error"
-                    color="error"
-                    action={
-                        <IconButton
-                            aria-label="close"
-                            color="inherit"
-                            size="small"
-                            onClick={() => {
-                                setFeedback({
-                                    isVisible: false,
-                                    message: '',
-                                });
-                            }}>
-                            <CloseIcon fontSize="inherit" />
-                        </IconButton>
-                    }>
-                    {feedback.message}
-                </Alert>
-            </Collapse>
             <Grid container direction="column" className={classes.container}>
                 <Title>Binance</Title>
                 {coins && <CoinsTable coins={coins} />}

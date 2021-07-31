@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useRef } from 'react';
 import {
     Container,
     Grid,
@@ -12,13 +12,10 @@ import {
     ListItemIcon,
     makeStyles,
     IconButton,
-    Collapse,
 } from '@material-ui/core';
-import Alert from '@material-ui/lab/Alert';
 import KeyIcon from '@material-ui/icons/VpnKey';
 import BookmarkIcon from '@material-ui/icons/Bookmark';
 import DeleteIcon from '@material-ui/icons/Delete';
-import CloseIcon from '@material-ui/icons/Close';
 
 import { useTranslate } from '../hooks/useTranslate';
 import { useApplicationContext } from '../context';
@@ -60,9 +57,6 @@ export const Settings: React.FC = () => {
     const { translate } = useTranslate(state.app.language);
     const classes = useStyles();
 
-    const [invalid, setInvalid] = useState(false);
-    const [deleted, setDeleted] = useState(false);
-
     const apiKeyRef = useRef<HTMLInputElement>(null);
     const secretKeyRef = useRef<HTMLInputElement>(null);
 
@@ -99,7 +93,14 @@ export const Settings: React.FC = () => {
         if (apiKeyRef?.current?.value && secretKeyRef?.current?.value) {
             onSave();
         } else {
-            setInvalid(true);
+            dispatch({
+                type: Types.SetFeedback,
+                payload: {
+                    visible: true,
+                    message: translate('ADD_THE_TWO_KEYS'),
+                    type: 'warning',
+                },
+            });
         }
     };
 
@@ -125,7 +126,14 @@ export const Settings: React.FC = () => {
             JSON.stringify(updatedCredentials),
         );
 
-        setDeleted(true);
+        dispatch({
+            type: Types.SetFeedback,
+            payload: {
+                visible: true,
+                message: translate('DELETED_KEYS'),
+                type: 'success',
+            },
+        });
     };
 
     const setCurrentCrendetials = (credentials: Credentials) => {
@@ -150,44 +158,6 @@ export const Settings: React.FC = () => {
 
     return (
         <Container maxWidth="md">
-            <Collapse in={invalid} timeout={0}>
-                <Alert
-                    variant="standard"
-                    severity="warning"
-                    color="warning"
-                    action={
-                        <IconButton
-                            aria-label="close"
-                            color="inherit"
-                            size="small"
-                            onClick={() => {
-                                setInvalid(false);
-                            }}>
-                            <CloseIcon fontSize="inherit" />
-                        </IconButton>
-                    }>
-                    {translate('ADD_THE_TWO_KEYS')}
-                </Alert>
-            </Collapse>
-            <Collapse in={deleted} timeout={0}>
-                <Alert
-                    variant="standard"
-                    severity="success"
-                    color="success"
-                    action={
-                        <IconButton
-                            aria-label="close"
-                            color="inherit"
-                            size="small"
-                            onClick={() => {
-                                setDeleted(false);
-                            }}>
-                            <CloseIcon fontSize="inherit" />
-                        </IconButton>
-                    }>
-                    {translate('DELETED_KEYS')}
-                </Alert>
-            </Collapse>
             <Grid container direction="column" className={classes.container}>
                 <Title>{`${translate('SETTINGS')} - Binance`}</Title>
                 <FormGroup className={classes.formGroup}>

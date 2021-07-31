@@ -6,6 +6,7 @@ import { useApplicationContext } from '../context';
 
 import { Header } from '../components/Header';
 import { Loading } from '../components/Loading';
+import { Feedback } from '../components/Feedback';
 
 type HeaderProps = {
     toggleMode: () => void;
@@ -18,6 +19,7 @@ export const Routes: React.FC<HeaderProps> = ({ toggleMode, mode }) => {
     return (
         <>
             {state.app.loading && <Loading />}
+            {state.app.feedback?.visible && <Feedback />}
             <Router>
                 <Header toggleMode={toggleMode} mode={mode} />
                 <Switch>

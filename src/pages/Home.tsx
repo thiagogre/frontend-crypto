@@ -29,7 +29,7 @@ export const Home: React.FC = () => {
     const { translate } = useTranslate(state.app.language);
 
     return (
-        <Container>
+        <Container maxWidth="md">
             <List>
                 <Link to="/table">
                     <ListItem button>
