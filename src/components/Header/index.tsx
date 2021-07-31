@@ -55,11 +55,16 @@ export const Header: React.FC<HeaderProps> = ({ toggleMode, mode }) => {
     const { translate } = useTranslate(state.app.language);
     const classes = useStyles();
 
-    const toggleLanguage = () =>
+    const toggleLanguage = () => {
+        const language = state.app.language === 'en' ? 'pt' : 'en';
+
         dispatch({
             type: Types.SetLanguage,
-            payload: state.app.language === 'en' ? 'pt' : 'en',
+            payload: language,
         });
+
+        localStorage.setItem('@crypto:language', language);
+    };
 
     return (
         <AppBar position="static" elevation={0}>
