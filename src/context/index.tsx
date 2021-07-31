@@ -10,6 +10,7 @@ const language: Language = 'en';
 const initialState = {
     app: {
         language,
+        loading: false,
     },
     user: { credentials: { list: [], current: null } },
 };
@@ -27,6 +28,7 @@ export const ApplicationProvider: React.FC = ({ children }) => {
             const storagedCredentials = localStorage.getItem(
                 '@crypto:credentials',
             );
+            const storagedLanguage = localStorage.getItem('@crypto:language');
 
             if (storagedCredentials) {
                 const credentials: UserCredentials =
@@ -41,6 +43,12 @@ export const ApplicationProvider: React.FC = ({ children }) => {
                     credentials.current?.apiKey;
                 api.defaults.headers.get['api-secret'] =
                     credentials.current?.secretKey;
+            }
+            if (storagedLanguage) {
+                dispatch({
+                    type: Types.SetLanguage,
+                    payload: storagedLanguage,
+                });
             }
         }
 

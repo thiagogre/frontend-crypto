@@ -20,9 +20,9 @@ import { useTranslate } from '../hooks/useTranslate';
 import { AllCoinsResponse } from '../models';
 import { api, url } from '../api/config';
 import { useApplicationContext } from '../context';
+import { Types } from '../context/types';
 
 import { Title } from '../components/Title';
-import { Loading } from '../components/Loading';
 
 type TableProps = {
     coins: AllCoinsResponse;
@@ -134,68 +134,71 @@ const CoinsTable: React.FC<TableProps> = ({ coins }) => {
 };
 export const Table: React.FC = () => {
     const classes = useStyles();
-    const { state } = useApplicationContext();
+    const { dispatch, state } = useApplicationContext();
 
-    const [loading, setLoading] = useState(true);
     const [feedback, setFeedback] = useState({ isVisible: false, message: '' });
     const [coins, setCoins] = useState<AllCoinsResponse | null>(null);
 
     const getCoins = async () => {
         try {
-            const { data } = await api.get(`${url.API_COINS}/all?type=SPOT`);
+            dispatch({
+                type: Types.SetLoading,
+                payload: true,
+            });
 
+            const { data } = await api.get(`${url.API_COINS}/all?type=SPOT`);
             setCoins(data);
+
+            dispatch({
+                type: Types.SetLoading,
+                payload: false,
+            });
         } catch (e) {
+            dispatch({
+                type: Types.SetLoading,
+                payload: false,
+            });
+
             const { status, data, statusText } = e.response;
             setFeedback({
                 isVisible: true,
                 message: `${status} - ${data.error || statusText}`,
             });
         }
-        setLoading(false);
     };
 
     useEffect(() => {
-        state.user.credentials.current ? getCoins() : setLoading(false);
-    }, []);
+        state.user.credentials?.current && getCoins();
+    }, [state.user.credentials]);
 
     return (
-        <>
-            {loading ? (
-                <Loading />
-            ) : (
-                <Container maxWidth="md">
-                    <Collapse in={feedback.isVisible} timeout={0}>
-                        <Alert
-                            variant="standard"
-                            severity="error"
-                            color="error"
-                            action={
-                                <IconButton
-                                    aria-label="close"
-                                    color="inherit"
-                                    size="small"
-                                    onClick={() => {
-                                        setFeedback({
-                                            isVisible: false,
-                                            message: '',
-                                        });
-                                    }}>
-                                    <CloseIcon fontSize="inherit" />
-                                </IconButton>
-                            }>
-                            {feedback.message}
-                        </Alert>
-                    </Collapse>
-                    <Grid
-                        container
-                        direction="column"
-                        className={classes.container}>
-                        <Title>Binance</Title>
-                        {coins && <CoinsTable coins={coins} />}
-                    </Grid>
-                </Container>
-            )}
-        </>
+        <Container maxWidth="md">
+            <Collapse in={feedback.isVisible} timeout={0}>
+                <Alert
+                    variant="standard"
+                    severity="error"
+                    color="error"
+                    action={
+                        <IconButton
+                            aria-label="close"
+                            color="inherit"
+                            size="small"
+                            onClick={() => {
+                                setFeedback({
+                                    isVisible: false,
+                                    message: '',
+                                });
+                            }}>
+                            <CloseIcon fontSize="inherit" />
+                        </IconButton>
+                    }>
+                    {feedback.message}
+                </Alert>
+            </Collapse>
+            <Grid container direction="column" className={classes.container}>
+                <Title>Binance</Title>
+                {coins && <CoinsTable coins={coins} />}
+            </Grid>
+        </Container>
     );
 };

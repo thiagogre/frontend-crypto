@@ -6,6 +6,7 @@ import { UserCredentials, Language } from '../models';
 export enum Types {
     SetUser = 'USER',
     SetLanguage = 'LANGUAGE',
+    SetLoading = 'LOADING',
 }
 
 export type InitialStateType = {
@@ -20,6 +21,7 @@ export type ContextType = {
 
 export type ApplicationControlsType = {
     language: Language;
+    loading: boolean;
 };
 
 export type UserType = {
