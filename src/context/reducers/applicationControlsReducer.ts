@@ -10,6 +10,8 @@ export const applicationControlsReducer = (
             return { ...state, language: action.payload };
         case Types.SetLoading:
             return { ...state, loading: action.payload };
+        case Types.SetFeedback:
+            return { ...state, feedback: action.payload };
         default:
             return state;
     }

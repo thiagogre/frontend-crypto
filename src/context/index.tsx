@@ -11,6 +11,7 @@ const initialState = {
     app: {
         language,
         loading: false,
+        feedback: undefined,
     },
     user: { credentials: { list: [], current: null } },
 };

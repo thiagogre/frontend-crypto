@@ -1,3 +1,4 @@
+import { Color } from '@material-ui/lab';
 import React from 'react';
 
 export type Credentials = {
@@ -11,6 +12,12 @@ export type UserCredentials = {
 };
 
 export type Language = 'en' | 'pt';
+
+export type Feedback = {
+    visible: boolean;
+    message: string;
+    type: Color;
+};
 
 export type Route = {
     exact: boolean;

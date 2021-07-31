@@ -1,12 +1,13 @@
 import { Dispatch } from 'react';
 
 import { Actions } from './actions';
-import { UserCredentials, Language } from '../models';
+import { UserCredentials, Language, Feedback } from '../models';
 
 export enum Types {
     SetUser = 'USER',
     SetLanguage = 'LANGUAGE',
     SetLoading = 'LOADING',
+    SetFeedback = 'FEEDBACK',
 }
 
 export type InitialStateType = {
@@ -22,6 +23,7 @@ export type ContextType = {
 export type ApplicationControlsType = {
     language: Language;
     loading: boolean;
+    feedback: Feedback | undefined;
 };
 
 export type UserType = {
