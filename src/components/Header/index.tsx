@@ -99,13 +99,6 @@ export const Header: React.FC<HeaderProps> = ({ toggleMode, mode }) => {
                             {state.app.language}
                         </Typography>
                     </Button>
-                    <Button
-                        href="#"
-                        variant="outlined"
-                        color={'secondary'}
-                        className={classes.link}>
-                        {translate('LOGIN')}
-                    </Button>
                 </Toolbar>
             </Container>
         </AppBar>
