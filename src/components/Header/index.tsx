@@ -1,3 +1,6 @@
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+
 import {
     AppBar,
     Container,
@@ -6,16 +9,19 @@ import {
     makeStyles,
     Button,
     IconButton,
+    useMediaQuery,
+    Menu,
+    MenuItem,
 } from '@material-ui/core';
 import SettingsIcon from '@material-ui/icons/Settings';
 import LightModeIcon from '@material-ui/icons/Brightness4';
 import DarkModeIcon from '@material-ui/icons/Brightness7';
 import TranslateIcon from '@material-ui/icons/Translate';
+import MenuIcon from '@material-ui/icons/Menu';
 
-import { useTranslate } from '../../hooks/useTranslate';
-import { Link } from 'react-router-dom';
 import { useApplicationContext } from '../../context';
 import { Types } from '../../context/types';
+import { useTranslate } from '../../hooks/useTranslate';
 
 type HeaderProps = {
     toggleMode: () => void;
@@ -34,6 +40,12 @@ const useStyles = makeStyles(theme => ({
             color: theme.palette.primary.contrastText,
         },
     },
+    container: {
+        display: 'flex',
+        alignItems: 'center',
+        flexDirection: 'row',
+        padding: matches => matches && '10px 20px',
+    },
     toolbar: {
         flexWrap: 'wrap',
     },
@@ -44,16 +56,34 @@ const useStyles = makeStyles(theme => ({
     link: {
         margin: theme.spacing(1, 1.5),
     },
-    languageButton: {
+    menuButton: {
+        display: 'flex',
+        alignItems: 'center',
+    },
+    menuIcon: {
+        marginRight: 5,
+    },
+    menuLink: {
         display: 'flex',
         alignItems: 'center',
     },
 }));
 
 export const Header: React.FC<HeaderProps> = ({ toggleMode, mode }) => {
+    const matches = useMediaQuery('(max-width:600px)');
+    const classes = useStyles(matches);
     const { state, dispatch } = useApplicationContext();
     const { translate } = useTranslate(state.app.language);
-    const classes = useStyles();
+
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
 
     const toggleLanguage = () => {
         const language = state.app.language === 'en' ? 'pt' : 'en';
@@ -68,38 +98,113 @@ export const Header: React.FC<HeaderProps> = ({ toggleMode, mode }) => {
 
     return (
         <AppBar position="static" elevation={0}>
-            <Container maxWidth="lg">
-                <Toolbar className={classes.toolbar}>
-                    <Typography
-                        variant="h6"
-                        noWrap
-                        className={classes.toolbarTitle}>
-                        <Link to={'/'}>Crypto Dashboard</Link>
-                    </Typography>
-                    <Link to={'/settings'}>
-                        <IconButton>
-                            <SettingsIcon color={'secondary'} />
+            <Container className={classes.container} maxWidth="lg">
+                <Typography
+                    variant="h6"
+                    noWrap
+                    className={classes.toolbarTitle}>
+                    <Link to={'/'}>Crypto Dashboard</Link>
+                </Typography>
+                {!matches ? (
+                    <Toolbar className={classes.toolbar}>
+                        <Link to={'/settings'}>
+                            <IconButton>
+                                <SettingsIcon color={'secondary'} />
+                            </IconButton>
+                        </Link>
+                        <IconButton onClick={toggleMode}>
+                            {mode === 'dark' ? (
+                                <DarkModeIcon color={'secondary'} />
+                            ) : (
+                                <LightModeIcon color={'secondary'} />
+                            )}
                         </IconButton>
-                    </Link>
-                    <IconButton onClick={toggleMode}>
-                        {mode === 'dark' ? (
-                            <DarkModeIcon color={'secondary'} />
-                        ) : (
-                            <LightModeIcon color={'secondary'} />
-                        )}
-                    </IconButton>
-                    <Button
-                        onClick={toggleLanguage}
-                        className={classes.languageButton}>
-                        <TranslateIcon color={'secondary'} />
-                        <Typography
-                            variant="subtitle2"
-                            color={'secondary'}
-                            className={classes.toolbarTitle}>
-                            {state.app.language}
-                        </Typography>
-                    </Button>
-                </Toolbar>
+                        <Button
+                            onClick={toggleLanguage}
+                            className={classes.menuButton}>
+                            <TranslateIcon color={'secondary'} />
+                            <Typography
+                                variant="subtitle2"
+                                color={'secondary'}
+                                className={classes.toolbarTitle}>
+                                {state.app.language}
+                            </Typography>
+                        </Button>
+                    </Toolbar>
+                ) : (
+                    <>
+                        <IconButton onClick={handleClick} size="small">
+                            <MenuIcon />
+                        </IconButton>
+                        <Menu
+                            id="simple-menu"
+                            anchorEl={anchorEl}
+                            keepMounted
+                            open={Boolean(anchorEl)}
+                            onClose={handleClose}>
+                            <MenuItem onClick={handleClose}>
+                                <Link
+                                    to={'/settings'}
+                                    className={classes.menuLink}
+                                    style={
+                                        mode === 'dark'
+                                            ? { color: '#f7f7f7' }
+                                            : { color: '#303030' }
+                                    }>
+                                    <SettingsIcon
+                                        className={classes.menuIcon}
+                                    />
+                                    <Typography
+                                        variant="subtitle2"
+                                        className={classes.toolbarTitle}>
+                                        {translate('SETTINGS')}
+                                    </Typography>
+                                </Link>
+                            </MenuItem>
+                            <MenuItem
+                                onClick={() => {
+                                    handleClose();
+                                    toggleMode();
+                                }}>
+                                {mode === 'dark' ? (
+                                    <>
+                                        <LightModeIcon
+                                            className={classes.menuIcon}
+                                        />
+                                        <Typography
+                                            variant="subtitle2"
+                                            className={classes.toolbarTitle}>
+                                            {translate('LIGHT_MODE')}
+                                        </Typography>
+                                    </>
+                                ) : (
+                                    <>
+                                        <DarkModeIcon
+                                            className={classes.menuIcon}
+                                        />
+                                        <Typography
+                                            variant="subtitle2"
+                                            className={classes.toolbarTitle}>
+                                            {translate('DARK_MODE')}
+                                        </Typography>
+                                    </>
+                                )}
+                            </MenuItem>
+                            <MenuItem
+                                onClick={() => {
+                                    handleClose();
+                                    toggleLanguage();
+                                }}>
+                                <TranslateIcon className={classes.menuIcon} />
+                                <Typography
+                                    variant="subtitle2"
+                                    className={classes.toolbarTitle}>
+                                    {state.app.language}
+                                </Typography>
+                            </MenuItem>
+                        </Menu>
+                    </>
+                )}
             </Container>
         </AppBar>
     );

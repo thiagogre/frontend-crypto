@@ -14,5 +14,7 @@
     "ADD_THE_TWO_KEYS": "Adicione as duas chaves",
     "DELETED_KEYS": "Chaves deletadas",
     "ASSETS_TABLE": "Tabela de Ativos",
-    "QUANTITY_FREE": "Quantidade livre"
+    "QUANTITY_FREE": "Quantidade livre",
+    "LIGHT_MODE": "Modo claro",
+    "DARK_MODE": "Modo escuro"
 }
