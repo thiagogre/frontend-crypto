@@ -37,7 +37,6 @@ const useStyles = makeStyles(theme => ({
         },
         a: {
             textDecoration: 'none',
-            color: theme.palette.primary.contrastText,
         },
     },
     container: {
@@ -77,6 +76,9 @@ export const Header: React.FC<HeaderProps> = ({ toggleMode, mode }) => {
 
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
+    const currentTheme =
+        mode === 'dark' ? { color: '#f7f7f7' } : { color: '#303030' };
+
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
     };
@@ -103,7 +105,9 @@ export const Header: React.FC<HeaderProps> = ({ toggleMode, mode }) => {
                     variant="h6"
                     noWrap
                     className={classes.toolbarTitle}>
-                    <Link to={'/'}>Crypto Dashboard</Link>
+                    <Link to={'/'} style={currentTheme}>
+                        Crypto Dashboard
+                    </Link>
                 </Typography>
                 {!matches ? (
                     <Toolbar className={classes.toolbar}>
@@ -146,11 +150,7 @@ export const Header: React.FC<HeaderProps> = ({ toggleMode, mode }) => {
                                 <Link
                                     to={'/settings'}
                                     className={classes.menuLink}
-                                    style={
-                                        mode === 'dark'
-                                            ? { color: '#f7f7f7' }
-                                            : { color: '#303030' }
-                                    }>
+                                    style={currentTheme}>
                                     <SettingsIcon
                                         className={classes.menuIcon}
                                     />

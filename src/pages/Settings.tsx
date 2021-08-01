@@ -42,6 +42,11 @@ const useStyles = makeStyles(theme => ({
         display: 'flex',
         alignItems: 'center',
     },
+    listItemText: {
+        width: 0,
+        overflow: 'hidden',
+        textOverflow: 'clip',
+    },
     boxCurrentIcon: {
         height: 50,
         width: 50,
@@ -212,6 +217,7 @@ export const Settings: React.FC = () => {
                                 <ListItemText
                                     primary={credentials.apiKey}
                                     secondary={credentials.secretKey}
+                                    className={classes.listItemText}
                                     onClick={() =>
                                         setCurrentCrendetials(credentials)
                                     }
