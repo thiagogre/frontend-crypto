@@ -106,16 +106,22 @@ export const Settings: React.FC = () => {
 
     const handleDelete = (credentials: Credentials) => {
         const updateCredentials = state.user.credentials.list;
+        const updateCurrentCredentials = state.user.credentials?.current;
 
         const updatedCredentials = updateCredentials.filter(
             c => c.apiKey !== credentials.apiKey && c,
         );
 
+        const current =
+            updateCurrentCredentials === credentials
+                ? null
+                : state.user.credentials.current;
+
         dispatch({
             type: Types.SetUser,
             payload: {
                 credentials: {
-                    ...state.user.credentials,
+                    current,
                     list: updatedCredentials,
                 },
             },
@@ -123,7 +129,10 @@ export const Settings: React.FC = () => {
 
         localStorage.setItem(
             '@crypto:credentials',
-            JSON.stringify(updatedCredentials),
+            JSON.stringify({
+                current,
+                list: updatedCredentials,
+            }),
         );
 
         dispatch({
@@ -184,7 +193,7 @@ export const Settings: React.FC = () => {
                     </Box>
                 </FormGroup>
                 <List>
-                    {state.user.credentials.list.map(
+                    {state.user.credentials?.list?.map(
                         (credentials: Credentials, i: number) => (
                             <ListItem button key={i}>
                                 <ListItemIcon className={classes.listItemIcon}>
