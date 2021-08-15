@@ -13,7 +13,7 @@
     "SECRET_KEY": "Chave secreta",
     "ADD_THE_TWO_KEYS": "Adicione as duas chaves",
     "DELETED_KEYS": "Chaves deletadas",
-    "ASSETS_TABLE": "Tabela de Ativos",
+    "ASSETS": "Ativos",
     "QUANTITY_FREE": "Quantidade livre",
     "LIGHT_MODE": "Modo claro",
     "DARK_MODE": "Modo escuro"

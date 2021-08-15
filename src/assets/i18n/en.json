@@ -13,7 +13,7 @@
     "SECRET_KEY": "Secret Key",
     "ADD_THE_TWO_KEYS": "Add the two keys",
     "DELETED_KEYS": "Deleted keys",
-    "ASSETS_TABLE": "Assets Table",
+    "ASSETS": "Assets",
     "QUANTITY_FREE": "Free quantity",
     "LIGHT_MODE": "Light mode",
     "DARK_MODE": "Dark mode"

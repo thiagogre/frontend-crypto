@@ -49,6 +49,7 @@ const useStylesTable = makeStyles({
     },
     tableTitle: {
         fontWeight: 'bold',
+        maxWidth: 0,
     },
     tableTotalRow: {
         fontWeight: 'bold',
@@ -79,16 +80,16 @@ const CoinsTable: React.FC<TableProps> = ({ coins }) => {
             <TableMUI className={classes.table} aria-label="simple table">
                 <TableHead>
                     <TableRow>
-                        <TableCell className={classes.tableTitle}>
+                        <TableCell className={classes.tableTitle} align="left">
                             {translate('ASSET')}
                         </TableCell>
-                        <TableCell className={classes.tableTitle} align="right">
+                        <TableCell className={classes.tableTitle} align="left">
                             {translate('PRICE')}&nbsp;($)
                         </TableCell>
-                        <TableCell className={classes.tableTitle} align="right">
+                        <TableCell className={classes.tableTitle} align="left">
                             {translate('QUANTITY_FREE')}
                         </TableCell>
-                        <TableCell className={classes.tableTitle} align="right">
+                        <TableCell className={classes.tableTitle} align="left">
                             {translate('VALUE')}&nbsp;($)
                         </TableCell>
                     </TableRow>
@@ -99,11 +100,11 @@ const CoinsTable: React.FC<TableProps> = ({ coins }) => {
                             <TableCell component="th" scope="row">
                                 {row.asset}
                             </TableCell>
-                            <TableCell align="right">
+                            <TableCell align="left">
                                 {row.price.toFixed(2)}
                             </TableCell>
-                            <TableCell align="right">{row.free}</TableCell>
-                            <TableCell align="right">
+                            <TableCell align="left">{row.free}</TableCell>
+                            <TableCell align="left">
                                 {row.value.toFixed(2)}
                             </TableCell>
                         </TableRow>
@@ -115,10 +116,10 @@ const CoinsTable: React.FC<TableProps> = ({ coins }) => {
                             className={classes.tableTotalRow}>
                             {translate('TOTAL')}
                         </TableCell>
-                        <TableCell align="right" />
-                        <TableCell align="right" />
+                        <TableCell align="left" />
+                        <TableCell align="left" />
                         <TableCell
-                            align="right"
+                            align="left"
                             className={classes.tableTotalRow}>
                             {coins.prices.totalAssetUSD.toFixed(2)}
                         </TableCell>
