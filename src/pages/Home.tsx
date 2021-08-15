@@ -38,7 +38,7 @@ export const Home: React.FC = () => {
                         </ListItemIcon>
                         <ListItemText>
                             <Typography variant="subtitle1" color="textPrimary">
-                                {translate('ASSETS_TABLE')}
+                                {translate('ASSETS')}
                             </Typography>
                         </ListItemText>
                     </ListItem>
