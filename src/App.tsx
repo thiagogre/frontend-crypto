@@ -6,10 +6,23 @@ import { ApplicationThemeProvider } from './theme';
 import { Routes } from './routes';
 
 const App = () => {
-    const [mode, setMode] = useState<PaletteType>('light');
+    const storagedTheme = localStorage.getItem('@crypto:theme');
+
+    const themeMatch = (type: string | null): PaletteType => {
+        switch (type) {
+            case 'dark':
+                return 'dark';
+            default:
+                return 'light';
+        }
+    };
+
+    const [mode, setMode] = useState<PaletteType>(themeMatch(storagedTheme));
 
     const toggleMode = () => {
-        setMode(mode === 'dark' ? 'light' : 'dark');
+        const theme = mode === 'dark' ? 'light' : 'dark';
+        setMode(theme);
+        localStorage.setItem('@crypto:theme', theme);
     };
 
     return (
